@@ -3,18 +3,25 @@ services:
     name: ecoleta-server
     env: node
     plan: free
+    autoDeploy: true
+
     buildCommand: npm install && npm run build
     startCommand: npm run start
-    autoDeploy: true
+    healthCheckPath: /healthz
+
     envVars:
-      - key: NODE_VERSION
-        value: 18.20.4
+      - key: NODE_ENV
+        value: production
       - key: DATABASE_FILE
         value: /var/data/database.sqlite
+      - key: APP_URL
+        value: https://ecoleta-server.onrender.com
       - key: NPM_CONFIG_PRODUCTION
         value: "false"
+
     disk:
       name: database
       mountPath: /var/data
       sizeGB: 1
+
     postDeployCommand: npm run knex:migrate && npm run knex:seed
