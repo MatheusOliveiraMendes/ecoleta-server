@@ -6,7 +6,7 @@ services:
     autoDeploy: true
 
     buildCommand: npm ci && npm run build
-    startCommand: npm run start
+    startCommand: bash -lc 'mkdir -p /var/data/uploads && npm run start'
     healthCheckPath: /healthz
 
     envVars:
