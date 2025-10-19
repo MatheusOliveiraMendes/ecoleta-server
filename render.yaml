@@ -26,5 +26,4 @@ services:
       mountPath: /var/data
       sizeGB: 1
 
-    # 👇 d minúsculo
-    postdeployCommand: bash -lc 'mkdir -p /var/data/uploads && cp -R uploads/. /var/data/uploads/ && npm run knex:migrate && npm run knex:seed'
+    postDeployCommand: bash -lc 'mkdir -p /var/data/uploads && cp -R uploads/. /var/data/uploads/ && npm run knex:migrate && npm run knex:seed'
