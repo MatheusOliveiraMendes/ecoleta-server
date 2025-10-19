@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import knex from '../database/connection';
-import { resolveBaseUrl } from '../utils/baseUrl';
+import { resolveAssetsBaseUrl } from '../utils/baseUrl';
 
 class PointsController {
 
@@ -31,11 +31,11 @@ class PointsController {
         }
 
         const points = await pointsQuery;
-        const baseUrl = resolveBaseUrl(req);
+        const assetsBaseUrl = resolveAssetsBaseUrl(req);
 
         const serializedPoints = points.map(point => ({
             ...point,
-            image_url: `${baseUrl}/uploads/${point.image}`,
+            image_url: `${assetsBaseUrl}/${point.image}`,
         }));
 
         return res.json(serializedPoints);
@@ -54,10 +54,10 @@ class PointsController {
             .where('point_items.point_id', id)
             .select('items.title');
 
-        const baseUrl = resolveBaseUrl(req);
+        const assetsBaseUrl = resolveAssetsBaseUrl(req);
         const serializedPoint = {
             ...point,
-            image_url: `${baseUrl}/uploads/${point.image}`,
+            image_url: `${assetsBaseUrl}/${point.image}`,
         };
 
         return res.json({ point: serializedPoint, items });
