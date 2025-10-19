@@ -1,0 +1,20 @@
+services:
+  - type: web
+    name: ecoleta-server
+    env: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm run start
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 18.20.4
+      - key: DATABASE_FILE
+        value: /var/data/database.sqlite
+      - key: NPM_CONFIG_PRODUCTION
+        value: "false"
+    disk:
+      name: database
+      mountPath: /var/data
+      sizeGB: 1
+    postDeployCommand: npm run knex:migrate && npm run knex:seed
