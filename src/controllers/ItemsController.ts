@@ -1,12 +1,13 @@
 import { Request, Response } from 'express';
 import knex from '../database/connection';
+import { resolveBaseUrl } from '../utils/baseUrl';
 
 class ItemsController {
     async index (req: Request, res: Response) {
 
         const items = await knex('items').select('*');
     
-        const baseUrl = process.env.APP_URL || 'http://localhost:3333';
+        const baseUrl = resolveBaseUrl(req);
 
         const serializedItems = items.map(item => ({
             id: item.id,
