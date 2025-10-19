@@ -6,7 +6,15 @@ services:
     autoDeploy: true
 
     buildCommand: npm ci && npm run build
-    startCommand: npm run start
+    # cria /var/data/uploads, copia uploads do repo (se existirem),
+    # roda migrations + seeds e inicia o server
+    startCommand: >
+      bash -lc 'mkdir -p /var/data/uploads &&
+      (cp -R uploads/. /var/data/uploads/ 2>/dev/null || true) &&
+      npm run knex:migrate &&
+      npm run knex:seed &&
+      npm run start'
+
     healthCheckPath: /healthz
 
     envVars:
@@ -25,5 +33,3 @@ services:
       name: database
       mountPath: /var/data
       sizeGB: 1
-
-    postdeployCommand: bash -lc 'mkdir -p /var/data/uploads && cp -R uploads/. /var/data/uploads/ && npm run knex:migrate && npm run knex:seed'
