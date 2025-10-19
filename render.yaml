@@ -7,9 +7,7 @@ services:
 
     buildCommand: npm ci && npm run build
     startCommand: >
-      bash -lc 'mkdir -p /tmp/uploads &&
-      (cp -R uploads/. /tmp/uploads/ 2>/dev/null || true) &&
-      npm run knex:migrate &&
+      bash -lc 'npm run knex:migrate &&
       npm run knex:seed &&
       npm run start'
 
@@ -20,9 +18,9 @@ services:
         value: production
       - key: DATABASE_FILE
         value: /tmp/database.sqlite
-      - key: UPLOAD_DIR
-        value: /tmp/uploads
       - key: APP_URL
         value: https://ecoleta-server.onrender.com
+      - key: ASSETS_BASE_URL
+        value: https://ecoleta-web.onrender.com/uploads
       - key: NPM_CONFIG_PRODUCTION
         value: "false"
