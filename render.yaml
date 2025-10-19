@@ -6,11 +6,9 @@ services:
     autoDeploy: true
 
     buildCommand: npm ci && npm run build
-    # cria /var/data/uploads, copia uploads do repo (se existirem),
-    # roda migrations + seeds e inicia o server
     startCommand: >
-      bash -lc 'mkdir -p /var/data/uploads &&
-      (cp -R uploads/. /var/data/uploads/ 2>/dev/null || true) &&
+      bash -lc 'mkdir -p /tmp/uploads &&
+      (cp -R uploads/. /tmp/uploads/ 2>/dev/null || true) &&
       npm run knex:migrate &&
       npm run knex:seed &&
       npm run start'
@@ -21,15 +19,10 @@ services:
       - key: NODE_ENV
         value: production
       - key: DATABASE_FILE
-        value: /var/data/database.sqlite
+        value: /tmp/database.sqlite
       - key: UPLOAD_DIR
-        value: /var/data/uploads
+        value: /tmp/uploads
       - key: APP_URL
         value: https://ecoleta-server.onrender.com
       - key: NPM_CONFIG_PRODUCTION
         value: "false"
-
-    disk:
-      name: database
-      mountPath: /var/data
-      sizeGB: 1
